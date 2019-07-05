@@ -29,7 +29,7 @@ int main()
 
 	while(true)
 	{
-		udpIf.strm_data.push(std::string("sample data\n"));
+		udpIf.push(std::string("sample data\n"));
 		std::cin.ignore();
 	}
 

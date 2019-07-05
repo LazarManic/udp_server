@@ -19,6 +19,8 @@ public:
 
 	void setBoardHandler(void (*f)(board_msg_t*));
 
+    void push(char* data); 
+    void push(std::string data);
 	/* Queue with support for multithreaded use */
 	strm_queue strm_data;
 

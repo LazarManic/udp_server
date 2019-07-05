@@ -58,7 +58,7 @@ void send_data_s3(char* sensor_name, float timestamp, float x, float y, float z)
 								std::to_string(y)+AXIS_DELIMITER+
 								std::to_string(z);
 
-	::udp_if_ptr->strm_data.push(message);
+	::udp_if_ptr->push(message);
 }
 
 void send_data_s1(char* sensor_name, float timestamp, float x)
@@ -68,6 +68,6 @@ void send_data_s1(char* sensor_name, float timestamp, float x)
 								std::to_string(timestamp)+DELIMITER+
 								std::to_string(x);
 
-	::udp_if_ptr->strm_data.push(message);
+	::udp_if_ptr->push(message);
 }
 

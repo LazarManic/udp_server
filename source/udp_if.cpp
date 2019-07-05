@@ -30,6 +30,18 @@ void udp_if::setBoardHandler(void (*f)(board_msg_t*))
 	this->board->handler = f;
 }
 
+void udp_if::push(char* data)
+{
+	if(this->strm_enabled.get_val())
+		this->strm_data.push(data);
+}
+
+void udp_if::push(std::string data)
+{
+	if(this->strm_enabled.get_val())
+		this->strm_data.push(data);
+}
+
 void udp_if::cmd_state_machine()
 {
 	while(true)
@@ -101,7 +113,9 @@ void udp_if::strm_state_machine()
 				break;
 
 			case send_state:
-				this->strm_channel.send_data(this->strm_data.pop());	
+				/* empty buffer contents */
+				while(this->strm_data.size())
+					this->strm_channel.send_data(this->strm_data.pop());	
 				this->strm_channel.state = idle_state;
 				break;
 			
@@ -159,6 +173,7 @@ void udp_if::execute()
 		else if(this->parser->message.cmd_id == CMD_DISCONNECT)
 		{
 			this->cmd_channel.state = init_state;
+			this->strm_channel.state = init_state;
 			this->strm_enabled.set_false();
 			std::cout << "Client disconnected. UDP server is still running." << std::endl;
 		}
