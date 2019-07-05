@@ -7,7 +7,7 @@
 
 udp_if::udp_if(std::string cmd_p, std::string strm_p, unsigned s_id) : 
 	cmd_channel(cmd_p), strm_channel(strm_p), shuttle_id(s_id),
-	init_semaphore(2), msgs(s_id)
+	msgs(s_id)
 {
 	this->parser = new udp_parser;
 	this->board = new board_if(s_id);
@@ -52,29 +52,7 @@ void udp_if::cmd_state_machine()
 				}
 				break;
 	
-			case board_info_state:
-				this->cmd_channel.send_data(msgs.boardinfo_cmd);	
-				this->cmd_channel.receive_data();
-				if(this->cmd_channel.data.formatted == msgs.boardinfo_rsp)
-				{
-					if(server_inited.get_val())
-					{	
-						this->cmd_channel.state = receive_state;
-						std::cout << "Client reconnected" << std::endl;
-					}
-
-					else
-						this->cmd_channel.state = wait_state;
-				}
-				else
-				{
-					this->cmd_channel.state = init_state;
-					std::cerr 	<< "ERROR: Wrong board configured" << std::endl;
-				}
-				break;	
-
 			case wait_state:
-				this->init_semaphore.acquire();
 				this->cmd_channel.state = receive_state;
 				this->server_inited.set_true();
 				break;
@@ -85,11 +63,11 @@ void udp_if::cmd_state_machine()
 				break;	
 	
 			case parse_exe_state:
+				this->cmd_channel.state = receive_state;
 				if(!this->parser->parse(this->cmd_channel.data.formatted))
 					std::cerr << "ERROR: Invalid command received" << std::endl;
 				else
 					this->execute();
-				this->cmd_channel.state = receive_state;
 				break;
 	
 			default:
@@ -118,7 +96,6 @@ void udp_if::strm_state_machine()
 				break;
 
 			case wait_state:
-				this->init_semaphore.acquire();
 				this->strm_channel.state = idle_state;
 				this->server_inited.set_true();
 				break;

@@ -33,7 +33,6 @@ private:
 	/* Objects for multithreading and synchronization */
 	std::thread* udp_cmd_worker;
 	std::thread* udp_strm_worker;
-	wait_semaphore init_semaphore;
 	atomic_bool strm_enabled;
 	atomic_bool server_inited;
 
