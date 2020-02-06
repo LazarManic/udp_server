@@ -1,11 +1,11 @@
-struct board_msg_t
+typedef struct 
 {
 	char* type;
 	char* cmd_id;
 	char* content;
 	char* sensor_name;
 	double timestamp;
-};
+}board_msg_t;
 
 
 void init_server(unsigned int, unsigned int, unsigned int);

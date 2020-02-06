@@ -11,7 +11,7 @@ DYNAMICFLAGS = -Bdynamic
 
 
 $(PROJECT): $(OBJ)
-	g++ -o $@ $^ -L. $(DYNAMICFLAGS) $(addprefix -l,$(DYNAMICLIBS))
+	gcc -o $@ $^ -L. $(DYNAMICFLAGS) $(addprefix -l,$(DYNAMICLIBS))
 
 %.o: %.c
-	g++ -o $@ -c $<
+	gcc -o $@ -c $<

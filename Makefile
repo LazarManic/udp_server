@@ -9,7 +9,8 @@
 
 SRCDIR = source/
 INCDIR = includes/
-OBJDIR = $(SRCDIR)obj/
+OBJDIRNAME = obj
+OBJDIR = $(SRCDIR)$(OBJDIRNAME)/
 
 SRC = $(wildcard $(SRCDIR)*.cpp)
 INC = $(wildcard $(INCDIR)*.hpp)
@@ -53,22 +54,29 @@ full: executable dynamic static copy
 
 executable: $(PROJECT)
 
-dynamic: $(PROJECTLIB)
+dynamic:  $(PROJECTLIB)
 
 static: $(STATICLIB)
 
-$(PROJECT): $(OBJ) 
+$(PROJECT): $(OBJ)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
 $(PROJECTLIB): $(OBJ)
-	$(CXX) -shared -o $@ $^ $(LDFLAGS) 
+	$(CXX) -shared -o $@ $^ $(LDFLAGS)
 
 $(STATICLIB): $(OBJ)
 	$(AR) rcs $@ $^
 
-$(OBJDIR)%.o: $(SRCDIR)%.cpp 
+$(OBJDIR)%.o: $(SRCDIR)%.cpp | ${OBJDIR}
 	$(CXX) -o $@ -c $(CXXFLAGS) $<
-
+	
+$(OBJDIR):
+ifeq ($(OS),Windows_NT)
+	if not exist $(subst /,\,$(OBJDIR)) mkdir $(subst /,\,$(OBJDIR))
+else
+	mkdir $(OBJDIR) -p
+endif
+	
 copy:
 ifeq ($(OS),Windows_NT)
 	copy udp_server.dll test\udp_server.dll /Y

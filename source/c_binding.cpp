@@ -12,8 +12,6 @@
 #include "strm_queue.hpp"
 #include "protocol.hpp"
 
-
-
 extern "C" void init_server(unsigned int, unsigned int, unsigned int);
 extern "C" void init_server_blocking(unsigned int, unsigned int, unsigned int);
 
