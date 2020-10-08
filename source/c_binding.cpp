@@ -7,6 +7,7 @@
 #include <vector>
 #include <cmath>
 
+#include "worker.hpp"
 #include "asio.hpp"
 #include "udp_if.hpp"
 #include "strm_queue.hpp"
@@ -23,8 +24,22 @@ extern "C" void send_data_s3(char* sensor_name, float timestamp,
 extern "C" void send_data_s1(char* sensor_name, float timestamp, float x);
 extern "C" void send_data_sb(char* sensor_name, float timestamp,
 							char* signal_name, unsigned int x);
+							
+/* My functions*/
+extern "C" void init_client();
 
+
+
+
+ 
 static udp_if* udp_if_ptr;
+extern worker* ptr;
+
+void init_client(){
+	
+	worker* tmp =  new worker();
+
+}
 
 void init_server(unsigned int command_port, unsigned int stream_port, unsigned int shuttleBoardID)
 {
@@ -54,7 +69,7 @@ void send_data_s3(char* sensor_name, float timestamp, float x, float y, float z)
 								std::to_string(timestamp)+DELIMITER+
 								std::to_string(x)+AXIS_DELIMITER+
 								std::to_string(y)+AXIS_DELIMITER+
-								std::to_string(z);
+								std::to_string(z)+"\n";
 
 	::udp_if_ptr->push(message);
 }

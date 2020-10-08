@@ -37,7 +37,10 @@ public:
     void unlock(); 
 	/* Thread blocks here if queue is empty. Unblock when something is 
 	 * pushed to queue */
-    void wait_if_empty();   
+    void wait_if_empty();  
+	/* Checks if queue is empty*/
+	bool empty();
+	
                             
 };
 

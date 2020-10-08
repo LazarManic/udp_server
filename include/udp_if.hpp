@@ -7,6 +7,8 @@
 #include "strm_queue.hpp"
 #include "board_if.hpp"
 
+//typedef implementation_defined bytes_readable;
+
 class udp_if
 {
 public:
@@ -37,6 +39,8 @@ private:
 	std::thread* udp_strm_worker;
 	atomic_bool strm_enabled;
 	atomic_bool server_inited;
+	atomic_bool cmd_inited;
+	atomic_bool strm_inited;
 
 	/* State machines for command channel and stream channel */
 	void cmd_state_machine();
@@ -48,9 +52,15 @@ private:
 	/* Object used for parsing received messages and responding */
 	udp_parser* parser;
 	board_if* board;
+	
+	/* Objects used to check socket status ex. (bytes_readable, bytes_written, etc.)*/
+	asio::socket_base::bytes_readable bytes_readable_cmd;
+	asio::socket_base::bytes_readable bytes_readable_strm;
+	
 
 	/* Method used for executing received command or sending response */
 	void execute();
+	
 };
 
 #endif

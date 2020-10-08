@@ -3,15 +3,16 @@
 
 udp_channel::udp_channel(std::string p) : 
 	port(p), 
-	socket(context, udp::endpoint(asio::ip::address::from_string("127.0.0.1"), std::stoi(p))),
+	socket(context, udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), std::stoi(p))),
 	state(init_state)
 {
+	std::cout << "Channel constructed!" << "port:" << p << std::endl;
 }
 
 void udp_channel::receive_data()
 {
 	this->data.len = this->socket.receive_from(
-			asio::buffer(this->data.raw, MAX_LEN), 
+			boost::asio::buffer(this->data.raw, MAX_LEN), 
 			this->endpoint);
 
 	/* Format raw data into string of correct length */
@@ -26,6 +27,6 @@ void udp_channel::receive_data()
 void udp_channel::send_data(std::string msg)
 {
 	std::strcpy(this->data.raw, msg.c_str());
-	this->socket.send_to(asio::buffer(this->data.raw, msg.length()), 
+	this->socket.send_to(boost::asio::buffer(this->data.raw, msg.length()), 
 				this->endpoint);
 }

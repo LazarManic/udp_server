@@ -65,3 +65,13 @@ void strm_queue::notify()
 {
     cv.notify_all();
 }
+
+bool strm_queue::empty(){
+	
+	if(this->queue.size() == 0){
+		return true;
+	}else{
+		return false;
+	}
+	
+}

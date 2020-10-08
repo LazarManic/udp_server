@@ -72,7 +72,7 @@ $(OBJDIR)%.o: $(SRCDIR)%.cpp | ${OBJDIR}
 	
 $(OBJDIR):
 ifeq ($(OS),Windows_NT)
-	if not exist $(subst /,\,$(OBJDIR)) mkdir $(subst /,\,$(OBJDIR))
+	#if not exist $(subst /,\,$(OBJDIR)) mkdir $(subst /,\,$(OBJDIR))
 else
 	mkdir $(OBJDIR) -p
 endif

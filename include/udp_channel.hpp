@@ -2,10 +2,14 @@
 #define _UDP_CHANNEL_HPP_
 
 #include <string>
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+#include <boost/array.hpp>
 #include "asio.hpp"
 #include "global_types.hpp"
 
-using asio::ip::udp;
+using boost::asio::ip::udp;
+
 
 class udp_channel
 {
@@ -16,12 +20,10 @@ public:
 	void send_data(std::string msg);
 	
 	std::string port;
-	asio::io_context context;
+	boost::asio::io_context context;
 	udp::endpoint endpoint;
 	udp::socket socket;
-
 	udp_states state;
-
 	data_t data;
 
 private:
